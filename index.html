@@ -25,7 +25,7 @@
         $(document).ready(function() {
             $('#get-password').click(function() {
                 var Id = prompt('Enter user ID:');
-                if (userId) {
+                if (Id) {
                     $.ajax({
                         url: 'https://app-daansterckx.cloud.okteto.net/service_password/' + Id,
                         method: 'GET',
