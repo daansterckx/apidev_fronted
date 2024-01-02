@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Service Password</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="container">
+    <h1>Service Password</h1>
+    <button id="get-password">Get Password</button>
+    <p id="password"></p>
+    <form id="myForm">
+        <div>
+            <label for="service-id">Service ID:</label>
+            <input type="text" id="service-id">
+        </div>
+        <div>
+            <label for="service-password">Password:</label>
+            <input type="password" id="service-password">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script>
+        $(document).ready(function() {
+            $('#get-password').click(function() {
+                var Id = prompt('Enter user ID:');
+                if (userId) {
+                    $.ajax({
+                        url: 'https://app-daansterckx.cloud.okteto.net/service_password/' + Id,
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer test'
+                        },
+                        success: function(data) {
+                            $('#password').text(data.password);
+                        },
+                        error: function() {
+                            alert('Error retrieving password');
+                        }
+                    });
+                }
+            });
+        });
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var serviceId = document.getElementById('service-id').value;
+        var servicePassword = document.getElementById('service-password').value;
+
+        fetch('https://app-daansterckx.cloud.okteto.net/service/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Add your token here
+                'Authorization': 'Bearer your_token'
+            },
+            body: JSON.stringify({
+                id: serviceId,
+                password: servicePassword
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+    });
+        
+    </script>
+</body>
+</html>
